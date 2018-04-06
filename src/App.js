@@ -1,27 +1,8 @@
 import React, { Component } from 'react';
-import logo from './assets/logo.png';
 import './App.css';
-import { Grid,Segment,Step } from 'semantic-ui-react'
+import { Grid,Segment,Step } from 'semantic-ui-react';
+import Login from './components/login';
 class App extends Component {
-  constructor(){
-    super();
-    this.state={
-      username:'',
-      password:''
-    }    
-  }
-  _handleChange=(e,{name,value})=>{
-      this.setState({
-        [name]:value
-      })
-  }
-  _handleSubmit=()=>{
-    (this.state.username.length<1)?this.setState({
-      username:undefined
-    }):(this.state.password.length<1)?this.setState({
-      password:undefined
-    }):console.log("READY TO GO");
-  }
   render() {
     return (
         <div className='login-form'>
@@ -34,12 +15,19 @@ class App extends Component {
           `}</style>
           <Grid
             textAlign='center'
-            style={{ height: '100%' }}
+            style={{ paddingTop: '10%' }}
             verticalAlign='middle'
           >
+          <Grid.Row 
+            columns={3}>
+            <Grid.Column>
+              <Login/>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
             <Grid.Column>
             <Step.Group ordered>
-              <Step>
+              <Step active>
                 <Step.Content>
                   <Step.Title>Signup</Step.Title>
                   <Step.Description>Create/Login to Continue</Step.Description>
@@ -56,10 +44,10 @@ class App extends Component {
                   <Step.Title>Add Your Skills</Step.Title>
                   <Step.Description>Tell Requiters about your skills</Step.Description>
                   </Step.Content>
-              </Step>
-              
+              </Step> 
   </Step.Group>
-            </Grid.Column>
+  </Grid.Column>
+            </Grid.Row>
           </Grid>
         </div>
       );

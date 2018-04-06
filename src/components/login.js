@@ -1,8 +1,29 @@
 import React,{Component} from 'react';
-import { Button, Form, Grid, Header, Image, Message, Segment,Step } from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Image, Message, Segment,Step } from 'semantic-ui-react';
+import logo from '../assets/logo.png';
 class Login extends Component{
+    constructor(){
+        super();
+        this.state={
+          username:'',
+          password:''
+        }    
+      }
+      _handleChange=(e,{name,value})=>{
+          this.setState({
+            [name]:value
+          })
+      }
+      _handleSubmit=()=>{
+        (this.state.username.length<1)?this.setState({
+          username:undefined
+        }):(this.state.password.length<1)?this.setState({
+          password:undefined
+        }):console.log("READY TO GO");
+      }
     render(){
         return(
+            <div>
             <Header as='h2' color='black' textAlign='center'>
             <Image src={logo} />
             {' '}Hire Skill
@@ -36,6 +57,7 @@ class Login extends Component{
           <Message>
             Hire Skill, Hiring Good Quality Engineers <a href='#'>Learn More</a>
           </Message>
+          </div>
         )
     }
 }
