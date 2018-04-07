@@ -20,11 +20,11 @@ class App extends Component {
             style={{ paddingTop: '10%' }}
             verticalAlign='middle'
           >
-          <Grid.Row 
-            columns={3}>
-            <Grid.Column>
-            {(this.props.loginStaus==false||this.props.match.params.tabSelect==undefined)?<Login/>:(this.props.match.params.tabSelect==1)?<Profile/>:(<AddSkill/>)}
-            </Grid.Column>
+          <Grid.Row>
+            {(this.props.loginStaus==false||this.props.match.params.tabSelect==undefined)?
+              <Grid.Column width={8}>
+                <Login/></Grid.Column>
+              :(this.props.match.params.tabSelect==1)?<Grid.Column width={8}><Profile/></Grid.Column>:(<Grid.Column  width={8}><AddSkill/></Grid.Column>)}
           </Grid.Row>
           <Grid.Row>
             <Grid.Column>
