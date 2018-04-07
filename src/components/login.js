@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { Button, Form, Grid, Header, Image, Message, Segment,Step } from 'semantic-ui-react';
+import { Button, Form, Header, Image, Message, Segment } from 'semantic-ui-react';
 import logo from '../assets/logo.png';
 import {HttpCall} from '../Api';
 class Login extends Component{
@@ -42,7 +42,7 @@ class Login extends Component{
             <Segment stacked>
               <Form.Input
                 fluid
-                error={(this.state.username==undefined)?true:false}
+                error={(this.state.username===undefined)?true:false}
                 value={this.state.username}
                 onChange={this._handleChange}
                 name="username"
@@ -53,7 +53,7 @@ class Login extends Component{
               <Form.Input
                 fluid
                 icon='lock'
-                error={(this.state.password==undefined)?true:false}
+                error={(this.state.password===undefined)?true:false}
                 value={this.state.password}
                 onChange={this._handleChange}
                 name="password"
@@ -65,7 +65,7 @@ class Login extends Component{
             </Segment>
           </Form>
           <Message>
-            Hire Skill, Hiring Good Quality Engineers <a href='#'>Learn More</a>
+            Hire Skill, Hiring Good Quality Engineers <a href='/'>Learn More</a>
           </Message>
           </div>
         )

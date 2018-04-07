@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-import { Route,BrowserRouter,Redirect,Switch} from 'react-router-dom';
+import { Route,BrowserRouter,Switch} from 'react-router-dom';
 var isLoggedIn=()=>{
    return sessionStorage.getItem('access_token')?true:false
 }

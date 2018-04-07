@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { Button, Form, Grid, Header, Image, Message, Segment,Step } from 'semantic-ui-react';
+import { Button, Form, Header, Image, Message, Segment } from 'semantic-ui-react';
 import logo from '../assets/logo.png';
 import {HttpCall} from '../Api';
 class Profile extends Component{
@@ -40,7 +40,7 @@ class Profile extends Component{
             <Segment stacked>
               <Form.Input
                 fluid
-                error={(this.state.first_name==undefined)?true:false}
+                error={(this.state.first_name===undefined)?true:false}
                 value={this.state.first_name}
                 onChange={this._handleChange}
                 name='first_name'
@@ -50,7 +50,7 @@ class Profile extends Component{
               />
               <Form.Input
                 fluid
-                error={(this.state.last_name==undefined)?true:false}
+                error={(this.state.last_name===undefined)?true:false}
                 value={this.state.last_name}
                 onChange={this._handleChange}
                 name="last_name"
@@ -63,7 +63,7 @@ class Profile extends Component{
             </Segment>
           </Form>
           <Message>
-            Hire Skill, Hiring Good Quality Engineers <a href='#'>Logout</a>
+            Hire Skill, Hiring Good Quality Engineers <a href='/'>Logout</a>
           </Message>
           </div>
         )

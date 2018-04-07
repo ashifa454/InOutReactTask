@@ -2,60 +2,73 @@ import React,{Component} from 'react';
 import {Header,Segment,List,Input,Icon,Grid,Button} from 'semantic-ui-react';
 import {SortableContainer,
     SortableElement,
-    SortableHandle,
    arrayMove} from 'react-sortable-hoc';
-const DragHandle = SortableHandle(() => <Icon name='hand paper' />);
 const SortableItem = SortableElement(({value}) =>
                     <List.Item style={{padding:'3px'}}>
                             <Input 
-                            iconPosition="right"
-                            icon={<Icon name='sort' circular inverted link />}
-                            placeholder={"Your "+(value+1)+" Skill"}
+                            label={{content:value.priority}}
+                            labelPosition='left'
+                            disabled={(value.name==='')?true:false}
+                            icon={value.name.length>1?<Icon circular onClick={()=>{
+                                
+                                }} inverted link name="delete" />:('')}
+                            placeholder={" Add Skill"}
                             fluid 
                             value={value.name}
-                            >
-                            </Input>
+                            />
                         </List.Item>
 );
 const SortableList = SortableContainer(({items}) => {
     return (
         <ul style={{padding:'10px'}}>
 {        items.map((value, index) => (
-          <SortableItem key={`item-${index}`} index={index} value={{
-              name:value,
-              priority:index
-              }} />
+          <SortableItem key={`item-${index}`} disabled={value.name===""} index={index} value={value} />
         ))
 }
         </ul>
     );
-  });
-  
+  }); 
 class AddSkill extends Component{
     state = {
         items: [{
-            name:'Javascript',
-            priority:1
-        }],
+            name:'',
+            priority:1},{
+                name:'',
+                priority:2},{
+                    name:'',
+                    priority:3},{
+                        name:'',
+                        priority:4},{
+                            name:'',
+                            priority:5},{
+                                name:'',
+                                priority:6},{
+                                    name:'',
+                                    priority:7},{
+                                        name:'',
+                                        priority:8},{
+                                            name:'',
+                                            priority:9},{
+                                                name:'',
+                                                priority:10}],
       };
       onSortEnd = ({oldIndex, newIndex}) => {
         this.setState({
           items: arrayMove(this.state.items, oldIndex, newIndex),
+        },()=>{
+            console.log(oldIndex,newIndex);
         });
       };
       _handleSuggestion=(value)=>{
         var tempItem=this.state.items;
-        if(tempItem.indexOf(value)<0){
-            tempItem.push(value);
-            this.setState({
-                items:tempItem
-            })    
-        }else{
-            tempItem.splice(tempItem.indexOf(value),1);
-            this.setState({
-                items:tempItem
-            })
+        for(var i=0;i<tempItem.length;i++){
+            if(tempItem[i].name===''){
+                tempItem[i].name=value;
+                break;
+            }
         }
+        this.setState({
+                items:tempItem})    
       }
     render(){
         return (
@@ -67,7 +80,7 @@ class AddSkill extends Component{
                     <Grid.Column width={10}>
                     <Segment stacked>
                 <List>
-                    <SortableList items={this.state.items} onSortEnd={this.onSortEnd} />
+                    <SortableList lockAxis="y" items={this.state.items} onSortEnd={this.onSortEnd} />
                 </List>
                 </Segment>
                     </Grid.Column>
