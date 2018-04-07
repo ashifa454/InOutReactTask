@@ -22,9 +22,9 @@ class App extends Component {
           >
           <Grid.Row>
             {(this.props.loginStaus===false||this.props.match.params.tabSelect===undefined)?
-              <Grid.Column width={8}>
+              <Grid.Column width={6}>
                 <Login/></Grid.Column>
-              :(this.props.match.params.tabSelect===1)?<Grid.Column width={8}><Profile/></Grid.Column>:(<Grid.Column  width={8}><AddSkill/></Grid.Column>)}
+              :(this.props.match.params.tabSelect==1)?<Grid.Column width={6}><Profile/></Grid.Column>:(<Grid.Column  width={10}><AddSkill/></Grid.Column>)}
           </Grid.Row>
           <Grid.Row>
             <Grid.Column>

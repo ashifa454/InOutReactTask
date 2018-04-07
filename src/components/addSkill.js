@@ -1,21 +1,25 @@
 import React,{Component} from 'react';
-import {Header,Segment,List,Input,Icon,Grid,Button} from 'semantic-ui-react';
+import {Header,Segment,List,Input,Icon,Grid,Button,Dropdown} from 'semantic-ui-react';
 import {SortableContainer,
     SortableElement,
    arrayMove} from 'react-sortable-hoc';
+import {HttpCall,HttpGETCall} from '../Api';
 const SortableItem = SortableElement(({value}) =>
                     <List.Item style={{padding:'3px'}}>
                             <Input 
-                            label={{content:value.priority}}
-                            labelPosition='left'
-                            disabled={(value.name==='')?true:false}
-                            icon={value.name.length>1?<Icon circular onClick={()=>{
+                                label={{content:value.priority}}
+                                labelPosition='left'
+                                disabled={(value.name==='')?true:false}
+                                icon={value.name.length>1?<Icon circular onClick={()=>{
                                 
                                 }} inverted link name="delete" />:('')}
-                            placeholder={" Add Skill"}
-                            fluid 
-                            value={value.name}
-                            />
+                                placeholder={"Add Skill"}
+                                onChange={(text)=>{
+                                    value.name=text
+                                }}
+                                value={value.name}
+                                fluid 
+                                />
                         </List.Item>
 );
 const SortableList = SortableContainer(({items}) => {
@@ -30,6 +34,7 @@ const SortableList = SortableContainer(({items}) => {
   }); 
 class AddSkill extends Component{
     state = {
+        possibleSkills:[],
         items: [{
             name:'',
             priority:1},{
@@ -59,11 +64,27 @@ class AddSkill extends Component{
             console.log(oldIndex,newIndex);
         });
       };
+      componentWillMount(){
+        HttpGETCall('https://test.hackinout.co/api/skills','GET',sessionStorage.getItem('access_token'),(response)=>{
+        var tempRes=[]
+        response.map((item,index)=>{
+            tempRes.push({
+                key:index,
+                value:item.uuid,
+                text:item.name
+            })
+        });
+        this.setState({
+                possibleSkills:tempRes
+            })
+          });
+      }
       _handleSuggestion=(value)=>{
         var tempItem=this.state.items;
         for(var i=0;i<tempItem.length;i++){
             if(tempItem[i].name===''){
-                tempItem[i].name=value;
+                tempItem[i].name=value.name;
+                tempItem[i].uuid=value.uuid
                 break;
             }
         }
@@ -87,20 +108,15 @@ class AddSkill extends Component{
                     <Grid.Column width={6}>
                     <Segment secondary>
                         <Header size='tiny'>Suggestions</Header>
-                        <List selection verticalAlign='middle'>
-                            {
-                                ['Java','Node.js','React.js','.NET','Angular.js','Android','UI Design'].map((item,index)=>{
-                                    return (
-                                        <List.Item onClick={()=>this._handleSuggestion(item)}>
-                                        <List.Icon name='add' />
-                                            <List.Content>
-                                                <List.Header>{item}</List.Header>
-                                            </List.Content>
-                                        </List.Item>
-                                    )
-                                })
-                            }
-                        </List>
+                        <Dropdown
+                        deburr
+                        fluid
+                        multiple
+                        options={this.state.possibleSkills}
+                        placeholder='Try to search for "Java"'
+                        search
+                        selection
+                        />
                     </Segment>
                     </Grid.Column>
                 </Grid>
