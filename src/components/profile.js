@@ -20,7 +20,7 @@ class Profile extends Component{
         }):(this.state.password.length<1)?this.setState({
           password:undefined
         }):console.log("READY TO GO");
-      }
+    }
     render(){
         return(
             <div>

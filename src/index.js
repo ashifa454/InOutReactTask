@@ -19,7 +19,7 @@ const Privateroute=({component:Component, ...props})=>(
 )
 ReactDOM.render(<BrowserRouter>
     <Switch>
-        <Route component={App}/>
+        <Route  component={App}/>
         <Privateroute exact path="/addnew/:tabSelect"/>
     </Switch>
 </BrowserRouter>, document.getElementById('root'));

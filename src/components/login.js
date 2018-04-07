@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import { Button, Form, Grid, Header, Image, Message, Segment,Step } from 'semantic-ui-react';
 import logo from '../assets/logo.png';
+import {HttpCall} from '../Api';
 class Login extends Component{
     constructor(){
         super();
@@ -19,7 +20,15 @@ class Login extends Component{
           username:undefined
         }):(this.state.password.length<1)?this.setState({
           password:undefined
-        }):console.log("READY TO GO");
+        }):HttpCall('https://test.hackinout.co/api/users/signin','POST',{
+            username:this.state.username,
+            password:this.state.password
+        },(response)=>{
+            sessionStorage.setItem('access_token',response.access_token);
+            sessionStorage.setItem('refresh_token',response.refresh_token);
+            sessionStorage.setItem('username',response.username);
+
+        })
       }
     render(){
         return(
