@@ -12,6 +12,7 @@ const SortableItem = SortableElement(({value}) =>
                             icon={<Icon name='sort' circular inverted link />}
                             placeholder={"Your "+(value+1)+" Skill"}
                             fluid 
+                            value={value.name}
                             >
                             </Input>
                         </List.Item>
@@ -20,7 +21,10 @@ const SortableList = SortableContainer(({items}) => {
     return (
         <ul style={{padding:'10px'}}>
 {        items.map((value, index) => (
-          <SortableItem key={`item-${index}`} index={index} value={index} />
+          <SortableItem key={`item-${index}`} index={index} value={{
+              name:value,
+              priority:index
+              }} />
         ))
 }
         </ul>
@@ -29,14 +33,30 @@ const SortableList = SortableContainer(({items}) => {
   
 class AddSkill extends Component{
     state = {
-        items: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7', 'Item 8', 'Item 9', 'Item 10'],
+        items: [{
+            name:'Javascript',
+            priority:1
+        }],
       };
       onSortEnd = ({oldIndex, newIndex}) => {
         this.setState({
           items: arrayMove(this.state.items, oldIndex, newIndex),
         });
       };
-      
+      _handleSuggestion=(value)=>{
+        var tempItem=this.state.items;
+        if(tempItem.indexOf(value)<0){
+            tempItem.push(value);
+            this.setState({
+                items:tempItem
+            })    
+        }else{
+            tempItem.splice(tempItem.indexOf(value),1);
+            this.setState({
+                items:tempItem
+            })
+        }
+      }
     render(){
         return (
             <div>
@@ -55,49 +75,19 @@ class AddSkill extends Component{
                     <Segment secondary>
                         <Header size='tiny'>Suggestions</Header>
                         <List selection verticalAlign='middle'>
-                            <List.Item>
-                            <List.Icon name='add' />
-      <List.Content>
-        <List.Header>Java</List.Header>
-      </List.Content>
-    </List.Item>
-    <List.Item>
-    <List.Icon name='add' />
-      <List.Content>
-        <List.Header>Node.js</List.Header>
-      </List.Content>
-    </List.Item>
-    <List.Item>
-    <List.Icon name='add' />
-      <List.Content>
-        <List.Header>React.js</List.Header>
-      </List.Content>
-    </List.Item>
-    <List.Item>
-    <List.Icon name='add' />
-      <List.Content>
-        <List.Header>.NET</List.Header>
-      </List.Content>
-    </List.Item>
-    <List.Item>
-    <List.Icon name='add' />
-      <List.Content>
-        <List.Header>Angular.js</List.Header>
-      </List.Content>
-    </List.Item>
-    <List.Item>
-    <List.Icon name='add' />
-      <List.Content>
-        <List.Header>Android</List.Header>
-      </List.Content>
-    </List.Item>
-    <List.Item>
-    <List.Icon name='add' />
-      <List.Content>
-        <List.Header>UI Design</List.Header>
-      </List.Content>
-    </List.Item>
-  </List>
+                            {
+                                ['Java','Node.js','React.js','.NET','Angular.js','Android','UI Design'].map((item,index)=>{
+                                    return (
+                                        <List.Item onClick={()=>this._handleSuggestion(item)}>
+                                        <List.Icon name='add' />
+                                            <List.Content>
+                                                <List.Header>{item}</List.Header>
+                                            </List.Content>
+                                        </List.Item>
+                                    )
+                                })
+                            }
+                        </List>
                     </Segment>
                     </Grid.Column>
                 </Grid>
