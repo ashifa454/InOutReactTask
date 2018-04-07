@@ -7,20 +7,20 @@ import { Route,BrowserRouter,Redirect,Switch} from 'react-router-dom';
 var isLoggedIn=()=>{
    return sessionStorage.getItem('access_key')?true:false
 }
-const Privateroute=({component:Component, ...restProps})=>(
-    <Route {...restProps} render={
+const Privateroute=({component:Component, ...props})=>(
+    <Route {...props} render={
         props=>(
             isLoggedIn()?
-            <App {...restProps}/>:(
-                <App {...restProps}/>
+            <App {...props} loginStaus={true}/>:(
+                <App {...props} loginStaus={false}/>
             )
         )
     }/>
 )
 ReactDOM.render(<BrowserRouter>
     <Switch>
-        <Route exact path="/" component={App}/>
-        <Privateroute path="/addnew/:tabSelect"/>
+        <Route component={App}/>
+        <Privateroute exact path="/addnew/:tabSelect"/>
     </Switch>
 </BrowserRouter>, document.getElementById('root'));
 registerServiceWorker();
