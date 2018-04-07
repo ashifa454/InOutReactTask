@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import { Button, Form, Grid, Header, Image, Message, Segment,Step } from 'semantic-ui-react';
 import logo from '../assets/logo.png';
+import {HttpCall} from '../Api';
 class Profile extends Component{
     constructor(){
         super();
@@ -15,11 +16,18 @@ class Profile extends Component{
           })
       }
       _handleSubmit=()=>{
-        (this.state.username.length<1)?this.setState({
-          username:undefined
-        }):(this.state.password.length<1)?this.setState({
-          password:undefined
-        }):console.log("READY TO GO");
+        (this.state.first_name.length<1)?this.setState({
+          first_name:undefined
+        }):(this.state.last_name.length<1)?this.setState({
+          last_name:undefined
+        }):HttpCall('https://test.hackinout.co/api/users/'+sessionStorage.getItem('username'),'POST',{
+          first_name:this.state.first_name,
+          last_name:this.state.last_name
+      },sessionStorage.getItem('access_token'),(response)=>{
+          sessionStorage.setItem('first_name',response.first_name);
+          window.location="/additem/2";
+
+      });
     }
     render(){
         return(
@@ -36,26 +44,26 @@ class Profile extends Component{
                 value={this.state.first_name}
                 onChange={this._handleChange}
                 name='first_name'
-                icon='user'
+                icon="user"
                 iconPosition='left'
-                placeholder='John'
+                placeholder='First Name'
               />
               <Form.Input
                 fluid
-                icon='lock'
                 error={(this.state.last_name==undefined)?true:false}
                 value={this.state.last_name}
                 onChange={this._handleChange}
                 name="last_name"
-                iconPosition='user'
-                placeholder='Doe'
+                icon="user"
+                iconPosition='left'
+                placeholder='Last name'
                 type='text'
               />
               <Button color='teal' fluid size='large'>Continue</Button>
             </Segment>
           </Form>
           <Message>
-            Hire Skill, Hiring Good Quality Engineers <a href='#'>Learn More</a>
+            Hire Skill, Hiring Good Quality Engineers <a href='#'>Logout</a>
           </Message>
           </div>
         )

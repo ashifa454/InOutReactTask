@@ -5,13 +5,13 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import { Route,BrowserRouter,Redirect,Switch} from 'react-router-dom';
 var isLoggedIn=()=>{
-   return sessionStorage.getItem('access_key')?true:false
+   return sessionStorage.getItem('access_token')?true:false
 }
 const Privateroute=({component:Component, ...props})=>(
     <Route {...props} render={
         props=>(
             isLoggedIn()?
-            <App {...props} loginStaus={true}/>:(
+            <App {...props} loginStaus={true} profileStatus={1}/>:(
                 <App {...props} loginStaus={false}/>
             )
         )
@@ -19,8 +19,8 @@ const Privateroute=({component:Component, ...props})=>(
 )
 ReactDOM.render(<BrowserRouter>
     <Switch>
-        <Route  component={App}/>
-        <Privateroute exact path="/addnew/:tabSelect"/>
+        <Privateroute exact path="/additem/:tabSelect"/>
+        <Route component={App}/>
     </Switch>
 </BrowserRouter>, document.getElementById('root'));
 registerServiceWorker();

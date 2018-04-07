@@ -23,10 +23,11 @@ class Login extends Component{
         }):HttpCall('https://test.hackinout.co/api/users/signin','POST',{
             username:this.state.username,
             password:this.state.password
-        },(response)=>{
+        },null,(response)=>{
             sessionStorage.setItem('access_token',response.access_token);
             sessionStorage.setItem('refresh_token',response.refresh_token);
             sessionStorage.setItem('username',response.username);
+            window.location="/additem/1";
 
         })
       }
