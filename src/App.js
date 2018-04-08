@@ -17,7 +17,7 @@ class App extends Component {
           `}</style>
           <Grid
             textAlign='center'
-            style={{ paddingTop: '10%' }}
+            style={{ paddingTop: '5%' }}
             verticalAlign='middle'
           >
           <Grid.Row>
