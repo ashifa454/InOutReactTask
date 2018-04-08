@@ -105,16 +105,30 @@ class AddSkill extends Component{
                 labelPosition='left'
                 disabled={this.state.skills[dataIndex].disabled}
                 name={dataIndex}
-                icon={this.state.skills[dataIndex].name.length>0?<Icon circular onClick={(e,data)=>{
-                    console.log(data);
-/*                    let skills=this.state.skills;
-                    skills[dataIndex].name="";
-                    this.setState({
-                        skills:skills
-                    })*/
+                icon={this.state.skills[dataIndex].name.length>0&&!this.state.skills[dataIndex].uuid?<Icon circular onClick={(e,data)=>{
+                    HttpCall('https://test.hackinout.co/api/users/'+sessionStorage.getItem('username')+'/skills','POST',{
+                        skills:[{
+                        name:this.state.skills[dataIndex].name,
+                        priority:this.state.skills[dataIndex].priority
+                    }]},sessionStorage.getItem('access_token'),(response)=>{
+                        var tempItems=this.state.skills;
+                        response[0].disabled=true;
+                        tempItems[dataIndex]=response[0];
+                        this.setState({
+                            skills:tempItems
+                        })
+                    });
+                }} inverted link name="checkmark" />:(this.state.skills[dataIndex].uuid)?<Icon circular onClick={()=>{
+                    HttpGETCall('https://test.hackinout.co/api/users/'+sessionStorage.getItem('username')+'/skills/'+this.state.skills[dataIndex].uuid,'DELETE',sessionStorage.getItem('access_token'),(response)=>{
+                        var tempItems=this.state.skills;
+                        tempItems.splice(dataIndex,1);
+                        this.setState({
+                            skills:tempItems
+                        })
+                    })
                 }} inverted link name="delete" />:<Icon circular onClick={()=>{
-                    console.log('clicked')
-                }} inverted link name="checkmark" />}
+
+                }} inverted link name="pencil" />}
                 placeholder={"Add skills"}                    
                 fluid 
                 value={this.state.skills[dataIndex].name}
