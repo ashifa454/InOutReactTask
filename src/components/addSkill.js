@@ -23,8 +23,14 @@ class AddSkill extends Component{
         this.setState({
           skills: arrayMove(this.state.skills, oldIndex, newIndex),
         },()=>{
-            this.state.skills[newIndex].priority=oldIndex;
-            this.state.skills[oldIndex].priority=newIndex;
+            var tempItem=this.state.skills;
+            tempItem[newIndex].uuid=null;
+            tempItem[newIndex].priority=oldIndex
+            tempItem[oldIndex].uuid=null;
+            tempItem[oldIndex].priority=oldIndex
+            this.setState({
+                skills:tempItem
+            })
         });
       };
       componentWillMount(){
@@ -60,7 +66,7 @@ class AddSkill extends Component{
       _handleSuggestion=(e, { value })=>{
         var tempItem=this.state.skills;
         for(var i=0;i<tempItem.length;i++){
-            if(tempItem[i].name===''&&!tempItem[i+1]){
+            if((tempItem[i].name===''&&!tempItem[i+1])){
                 tempItem[i].name=value[this.state.k];
                 tempItem.push({
                     name:'',
@@ -74,7 +80,7 @@ class AddSkill extends Component{
             }
         }
         this.setState({
-                skills:tempItem})    
+                skills:tempItem})  
       }
       handleChange = (e, { name, value }) =>{
         let skills=this.state.skills;
@@ -133,7 +139,8 @@ class AddSkill extends Component{
                 fluid 
                 value={this.state.skills[dataIndex].name}
                 onChange={this.handleChange.bind(this)}
-                />
+                >
+                </Input>
         </List.Item>);
         var SortableList = SortableContainer(() => {
                 return (
