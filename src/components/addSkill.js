@@ -25,11 +25,13 @@ class AddSkill extends Component{
         },()=>{
             var tempItem=this.state.skills;
             tempItem[newIndex].uuid=null;
-            tempItem[newIndex].priority=oldIndex
+            tempItem[newIndex].priority=newIndex
             tempItem[oldIndex].uuid=null;
             tempItem[oldIndex].priority=oldIndex
             this.setState({
                 skills:tempItem
+            },()=>{
+                console.log(this.state.skills)
             })
         });
       };
