@@ -7,7 +7,8 @@ class Login extends Component{
         super();
         this.state={
           username:'',
-          password:''
+          password:'',
+          response:''
         }    
       }
       _handleChange=(e,{name,value})=>{
@@ -24,11 +25,20 @@ class Login extends Component{
             username:this.state.username,
             password:this.state.password
         },null,(response)=>{
+          if(response.error&&response.message=="Invalid Password"){
+            this.setState({
+              response:response.error.message
+            })
+          }else if(response.error){
+            this.setState({
+              response:response.error.message
+            })
+          }else{
             sessionStorage.setItem('access_token',response.access_token);
             sessionStorage.setItem('refresh_token',response.refresh_token);
             sessionStorage.setItem('username',response.username);
             window.location="/additem/1";
-
+          }
         })
       }
     render(){
@@ -38,7 +48,7 @@ class Login extends Component{
             <Image src={logo} />
             {' '}Hire Skill
           </Header>
-          <Form size='large' onSubmit={this._handleSubmit}>
+          <Form size='large' onSubmit={this._handleSubmit} error={this.state.response.length>0}>
             <Segment stacked>
               <Form.Input
                 fluid
@@ -61,6 +71,11 @@ class Login extends Component{
                 placeholder='Password'
                 type='password'
               />
+              <Message
+                error
+              >
+              {this.state.response}
+              </Message>
               <Button color='teal' fluid size='large'>Continue</Button>
             </Segment>
           </Form>

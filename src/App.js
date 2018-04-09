@@ -35,7 +35,7 @@ class App extends Component {
                   <Step.Description>Login to Continue</Step.Description>
                   </Step.Content>
               </Step>
-              <Step completed={this.props.profileStatus===1} active={this.props.loginStaus===true&&this.props.match.params.tabSelect===1}>
+              <Step completed={this.props.profileStatus===this.props.match.params.tabSelect-1} active={this.props.loginStaus===true&&this.props.match.params.tabSelect===1}>
                 <Step.Content >
                   <Step.Title>Create Profile</Step.Title>
                   <Step.Description>Add Your Basic Details</Step.Description>

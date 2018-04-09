@@ -11,10 +11,12 @@ class AddSkill extends Component{
     state = {
         possibleSkills:[],
         k:0,
+        lastKey:1,
         skills:[
             {
                 name:'',
                 priority:1,
+                key:0,
                 disabled:false
             }
         ],
@@ -48,14 +50,19 @@ class AddSkill extends Component{
         HttpGETCall('https://test.hackinout.co/api/users/johndoe/skills','GET',sessionStorage.getItem('access_token'),(response)=>{
             if(response.length>0){
                 response.sort((a,b)=>parseInt(a.priority)-parseInt(b.priority))
+                response.map((item,index)=>{
+                    item.key=item.uuid
+                })
                 response.push({
                     name:'',
+                    key:this.state.lastKey,
                     priority:undefined,
                     disabled:false
 
                 })
                 this.setState({
-                    skills:response
+                    skills:response,
+                    lastKey:this.state.lastKey+1
                 })
 
             }
@@ -72,11 +79,13 @@ class AddSkill extends Component{
                 tempItem[i].name=value[this.state.k];
                 tempItem.push({
                     name:'',
+                    key:this.state.lastKey,
                     disabled:false,
                     priority:i+1
                 })
                 this.setState({
-                    k:this.state.k+1
+                    k:this.state.k+1,
+                    lastKey:this.state.lastKey+1
                 })                
                 break;
             }
@@ -91,25 +100,28 @@ class AddSkill extends Component{
         if(skills[name].name.length>0&&!skills[name+1]){
             skills.push({
                 name:'',
+                key:this.state.lastKey,                
                 disabled:false,
                 priority:name+1
             })
         }
         this.setState({
-            skills:skills
+            skills,
+            lastKey:this.state.lastKey+1
         })
     }
     constructor(){
         super();
     }
     render(){
+        const {skills}=this.state;
+    
         var SortableItem = SortableElement(({dataIndex}) =>
         <List.Item
-         key={['list',dataIndex].join('_')}
          style={{padding:'3px'}}>
+         <div>
             <Input 
                 label={<DragHandle index={(dataIndex+1)}/>}
-                key={dataIndex}
                 labelPosition='left'
                 disabled={this.state.skills[dataIndex].disabled}
                 name={dataIndex}
@@ -135,23 +147,25 @@ class AddSkill extends Component{
                         })
                     })
                 }} inverted link name="delete" />:<Icon circular onClick={()=>{
-
+                    
                 }} inverted link name="pencil" />}
                 placeholder={"Add skills"}                    
                 fluid 
-                value={this.state.skills[dataIndex].name}
+                value={skills[dataIndex].name}
                 onChange={this.handleChange.bind(this)}
                 >
                 </Input>
+                </div>
         </List.Item>);
         var SortableList = SortableContainer(() => {
                 return (
                         <ul style={{padding:'10px'}}>
                         {        
                         this.state.skills.map((value, index) => (
-                            <SortableItem   key={`item-${index}`} 
+                            <SortableItem   
                                             disabled={value.name.length<1} 
                                             index={index} 
+                                            key={'list_'+`${value.key}`}
                                             dataIndex={index} 
                                             data={this.state.skills}
                                             updateProps={this.handleChange} />
@@ -179,6 +193,7 @@ class AddSkill extends Component{
                         <Dropdown
                         fluid
                         multiple
+                        open
                         onChange={this._handleSuggestion.bind(this)}
                         options={this.state.possibleSkills}
                         placeholder='Try to search for "Java"'
