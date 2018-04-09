@@ -17,7 +17,7 @@ const Privateroute=({component:Component, ...props})=>(
         )
     }/>
 )
-ReactDOM.render(<BrowserRouter>
+ReactDOM.render(<BrowserRouter basename="/InOutReactTask">
     <Switch>
         <Privateroute exact path="/additem/:tabSelect"/>
         <Route component={App}/>
